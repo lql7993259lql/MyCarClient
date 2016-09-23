@@ -16,5 +16,82 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
+    
+    <style name="AppTheme.Common" />
+
+    <style name="AppTheme.Common.Launch">
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="MatchParent">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="MatchParent.Weight">
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <style name="MatchParent.Weight.Height">
+        <item name="android:layout_height">0dp</item>
+    </style>
+
+    <style name="MatchParent.Weight.Width">
+        <item name="android:layout_width">0dp</item>
+    </style>
+
+    <style name="WrapContent">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="WrapContent.WidthMatchParent">
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="WrapContent.HeightMatchParent">
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="WrapContent.AdjustViewBoundsFalse">
+        <item name="android:adjustViewBounds">false</item>
+    </style>
+
+    <style name="ButtonWrapContent" parent="@style/Widget.AppCompat.Button">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
+    <style name="WrapContent.WidthMatchParent.RecyclerItem">
+    </style>
+
+    <style name="WrapContent.WidthMatchParent.RecyclerItem.Foreground">
+    </style>
+
+    <style name="ProgressBar" parent="Widget.AppCompat.ProgressBar.Horizontal" />
+
+    <style name="ProgressBar.WrapContentHeight">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="ButtonWrapContent.WidthMatch">
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="EditTextMd" parent="@style/Widget.AppCompat.EditText">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
+    <style name="EditTextMd.WidthMatch">
+        <item name="android:layout_width">match_parent</item>
+    </style>
+    
+    
 
 </resources>

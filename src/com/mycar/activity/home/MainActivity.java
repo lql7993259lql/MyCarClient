@@ -10,23 +10,13 @@ import android.view.View;
 public class MainActivity extends BaseActivity {
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		
-		
-		
-	}
-
-	@Override
-	public void setContentView() {
-		setContentView(R.layout.activity_main);
-	}
-
-	@Override
-	public void setContentView(View view) {
+	protected void onActivityCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		
 	}
 
+	
+
+	
 	
 }
