@@ -2,10 +2,15 @@ package com.mycar.activity.base;
 
 import com.mycar.R;
 import com.mycar.dialog.ImageDialog;
+import com.mycar.dialog.WaitDialog;
 import com.mycar.dialog.WebDialog;
 import com.mycar.nohttp.CallServer;
 import com.mycar.nohttp.HttpListener;
+import com.yolanda.nohttp.Headers;
+import com.yolanda.nohttp.NoHttp;
+import com.yolanda.nohttp.rest.OnResponseListener;
 import com.yolanda.nohttp.rest.Request;
+import com.yolanda.nohttp.rest.RequestQueue;
 import com.yolanda.nohttp.rest.Response;
 import com.yolanda.nohttp.rest.StringRequest;
 import com.yolanda.nohttp.tools.HeaderParser;
@@ -22,17 +27,29 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import butterknife.ButterKnife;
 
 
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract  class BaseActivity extends AppCompatActivity {
 	private CoordinatorLayout mCoordinatorLayout;
     private AppBarLayout mAppBarLayout;
     private Toolbar mToolbar;
     private FrameLayout mContentLayout;
+    /**
+     * 请求的时候等待框。
+     */
+    private WaitDialog mWaitDialog;
 
+    /**
+     * 请求队列。
+     */
+    private RequestQueue requestQueue;
+    
     @Override
     protected final void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+		ButterKnife.inject(this);
+		ButterKnife.setDebug(true);
         getDelegate().setContentView(R.layout.activity_base);
 
         mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorlayout);
@@ -42,6 +59,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         setSupportActionBar(mToolbar);
         setBackBar(true);
+        mWaitDialog = new WaitDialog(this);
+        // 创建请求队列, 默认并发3个请求,传入你想要的数字可以改变默认并发数, 例如NoHttp.newRequestQueue(1)。
+        requestQueue = NoHttp.newRequestQueue();
         onActivityCreate(savedInstanceState);
     }
 
@@ -220,5 +240,53 @@ public abstract class BaseActivity extends AppCompatActivity {
         CallServer.getRequestInstance().cancelBySign(this);
         super.onDestroy();
     }
+
+    /**
+     * 回调对象，接受请求结果.
+     */
+    private OnResponseListener<String> onResponseListener = new OnResponseListener<String>() {
+       
+        @Override
+        public void onSucceed(int what, Response<String> response) {
+//            if (what == NOHTTP_WHAT_TEST) {// 根据what判断是哪个请求的返回，这样就可以用一个OnResponseListener来接受多个请求的结果。
+//                int responseCode = response.getHeaders().getResponseCode();// 服务器响应码。
+//
+//                if (responseCode == 200) {// 如果是是用NoHttp的默认的请求或者自己没有对NoHttp做封装，这里最好判断下Http状态码。
+//                    String result = response.get();// 响应结果。
+//
+//                    ((TextView) findView(R.id.tv_result)).setText(result);
+//
+//                    Object tag = response.getTag();// 拿到请求时设置的tag。
+//                    byte[] responseBody = response.getByteArray();// 如果需要byteArray自己解析的话。
+//
+//                    // 响应头
+//                    Headers headers = response.getHeaders();
+//                    String headResult = getString(R.string.request_original_result);
+//                    headResult = String.format(Locale.getDefault(), headResult, headers.getResponseCode(), response.getNetworkMillis());
+//                    ((TextView) findView(R.id.tv_head)).setText(headResult);
+//                }
+//            }
+        }
+
+        @Override
+        public void onStart(int what) {
+            // 请求开始，这里可以显示一个dialog
+            if (mWaitDialog != null && !mWaitDialog.isShowing())
+                mWaitDialog.show();
+        }
+
+        @Override
+        public void onFinish(int what) {
+            // 请求结束，这里关闭dialog
+            if (mWaitDialog != null && mWaitDialog.isShowing())
+                mWaitDialog.dismiss();
+        }
+
+        @Override
+        public void onFailed(int what, String url, Object tag, Exception exception, int responseCode, long networkMillis) {
+            // 请求失败
+            //((TextView) findView(R.id.tv_result)).setText("请求失败: " + exception.getMessage());
+        }
+    };
 	
 }
